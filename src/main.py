@@ -104,9 +104,9 @@ def train_vtr_encoder(args: Namespace, train_data: list, val_data: list = None, 
         vtr.out_channels,
         not args.no_ocr,
     )
-    
+
     char2array = pickle.load(open(vtr.char2array, "rb"))
-    
+
     dataset_args = (char2array, vtr.window_size, vtr.stride, training_config.max_seq_len)
     if args.no_ocr:
         train_dataset: Dataset = VTRDataset(train_data, *dataset_args)
