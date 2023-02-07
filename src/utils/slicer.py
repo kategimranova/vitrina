@@ -75,7 +75,7 @@ class VTRSlicerWithText:
 class VTRSlicer:
     def __init__(
         self,
-        char2array: str,
+        char2array: dict,
         window_size: int = 25,
         stride: int = 10,
     ):
