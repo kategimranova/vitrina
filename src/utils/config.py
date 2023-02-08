@@ -13,6 +13,7 @@ class VTRConfig:
     hidden_size_ocr: int
     num_layers_ocr: int
     ratio: float
+    char2array: str
     max_slices_count_per_word: int = None
 
     @classmethod
