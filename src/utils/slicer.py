@@ -97,4 +97,4 @@ class VTRSlicer:
         image_bytes = F.pad(image_bytes, (0, padded_image_width - image_width), "constant", 0)
         slices = image_bytes.unfold(1, self.window_size, self.stride).permute((1, 0, 2))[:max_slice_count]
 
-        return image_bytes
+        return slices
