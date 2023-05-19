@@ -5,6 +5,13 @@ from torch.utils.data import IterableDataset, Dataset
 from tqdm import tqdm
 import os
 
+def get_word(sentence):
+    words = sentence.split()
+    for word in words:
+        if 4 <= len(word) <= 7 and word.isalpha():
+            return word
+    return ""
+
 
 class NLLBDataset(IterableDataset):
     def __init__(
@@ -48,6 +55,7 @@ class NLLBDataset(IterableDataset):
 
             for elem in info["translation"].items():
                 text = clean_text(elem[1])
+                text = get_word(text)
                 if len(text) == 0:
                     continue
                 label = self.lang2label[elem[0]]
@@ -58,7 +66,7 @@ class FloresDataset(Dataset):
     def __init__(self, lang2label: dict, split="dev", dataset_dir: str = None):
         assert split in ["dev", "devtest"], "Split for FLORES dataset must be dev or devtest"
         self.lang2label = lang2label
-        self.langs = lang2label.keys()
+        self.langs = list(lang2label.keys())
 
         if dataset_dir:
             self.dataset = load_dataset("json", data_files=os.path.join(dataset_dir, f"{split}.jsonl"))["train"]
@@ -72,6 +80,9 @@ class FloresDataset(Dataset):
             current_label = self.lang2label[lang]
             for sentence in sentences:
                 text = clean_text(sentence)
+                text = get_word(text)
+                if len(text) == 0:
+                    continue
                 self.data.append({"text": text, "label": current_label})
 
     def get_data(self):
